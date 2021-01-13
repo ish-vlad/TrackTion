@@ -2,7 +2,7 @@
 Разработка системы наблюдения за людьми по распределённому набору видеокамер с использованием технологий машинного зрения
 
 # Darknet
-Darknet repo
+## Darknet repo
 ```python
 !git clone https://github.com/pjreddie/darknet
 ```
