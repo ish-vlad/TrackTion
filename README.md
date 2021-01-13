@@ -2,6 +2,11 @@
 Разработка системы наблюдения за людьми по распределённому набору видеокамер с использованием технологий машинного зрения
 
 # Darknet
+
+Откуда брал код:
+1) https://cloudxlab.com/blog/setup-yolo-with-darknet/
+2) https://cloudxlab.com/blog/object-detection-yolo-and-python-pydarknet/
+
 ## Darknet repo
 
 При необходимости:
