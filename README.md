@@ -3,11 +3,14 @@
 
 # Darknet
 ## Darknet repo
-```python
-!git clone https://github.com/pjreddie/darknet
+
+При необходимости:
+
+```
+git clone https://github.com/pjreddie/darknet
 ```
 
-Можно будет скачать или так:
+Затем все файлы можно будет скачать или так:
 ```python
 import urllib.request
 
