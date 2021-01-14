@@ -4,9 +4,10 @@ import cv2
 import imutils
 from imutils.video import FPS
 from imutils.video import VideoStream
-from .vars import Yolo, Image
+from yolov3.vars import Yolo, Image
 import pandas as pd
 import os
+from mall.mapping import get_coords
 
 LABELS_FILE = Yolo.LABELS_FILE
 CONFIG_FILE = Yolo.CONFIG_FILE
@@ -113,6 +114,8 @@ def object_tracking_table(INPUT_FILE, OUTPUT_FILE, show_output_image=False, save
                 (x, y) = (boxes[i][0], boxes[i][1])
                 (w, h) = (boxes[i][2], boxes[i][3])
 
+                x_cm, y_cm = get_coords(x, y)
+
                 # print(f'x: {x}, y: {y}')
                 # print(f'width: {w}, height: {h}')
 
@@ -123,6 +126,8 @@ def object_tracking_table(INPUT_FILE, OUTPUT_FILE, show_output_image=False, save
                     w,  # box_w
                     x,  # box_xc
                     y,  # box_yc
+                    np.round(x_cm, 4), # box_xc_cm
+                    np.round(y_cm, 4) # box_yc_cm
                 ]
 
                 rows.append(row)
@@ -164,7 +169,7 @@ def __table_to_csv(INPUT_FILE, rows, save_csv=True):
     ds_name = np.repeat(filename, arr.shape[0])[:, None]
     matrix = np.hstack((ds_name, arr))
 
-    columns = ['ds_name', 'id', 'frame_num', 'box_h', 'box_w', 'box_xc', 'box_yc']
+    columns = ['ds_name', 'id', 'frame_num', 'box_h', 'box_w', 'box_xc', 'box_yc', 'box_xc_cm', 'box_yc_cm']
     df = pd.DataFrame(matrix, columns=columns)
     df = df.apply(pd.to_numeric, errors='ignore')
 
