@@ -169,7 +169,9 @@ def __table_to_csv(INPUT_FILE, rows, save_csv=True):
     ds_name = np.repeat(filename, arr.shape[0])[:, None]
     matrix = np.hstack((ds_name, arr))
 
-    columns = ['ds_name', 'id', 'frame_num', 'box_h', 'box_w', 'box_xc', 'box_yc', 'box_xc_cm', 'box_yc_cm']
+    columns = ['ds_name', 'id', 'frame_num', 'box_height', 'box_width',
+               'box_xc_pixels', 'box_yc_pixels', 'box_xc_cm', 'box_yc_cm']
+
     df = pd.DataFrame(matrix, columns=columns)
     df = df.apply(pd.to_numeric, errors='ignore')
 
