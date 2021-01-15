@@ -59,6 +59,8 @@ def parse_tree(root):
 
 
 if __name__ == "__main__":
+    if len(sys.argv) < 3:
+        raise EnvironmentError('Not enough arguments specified')
     INFILE = sys.argv[1]
     OUTFILE = sys.argv[2]
     xtree = et.parse("test.xml")
