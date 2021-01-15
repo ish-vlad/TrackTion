@@ -2,6 +2,8 @@ import xml.etree.ElementTree as et
 import pandas as pd
 import sys
 from tqdm import tqdm
+
+
 def parse_tree(root):
     df_cols = ["ds_name", "id", "frame_num", "orientation", "box_h", "box_w", "box_xc", "box_yc", "appearance", "movement", "role", "context", "situation"]
     df = pd.DataFrame(columns=df_cols)
@@ -54,6 +56,7 @@ def parse_tree(root):
 
             df = df.append(d, ignore_index=True)
     return df
+
 
 if __name__ == "__main__":
     INFILE = sys.argv[1]
