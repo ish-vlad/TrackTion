@@ -4,7 +4,7 @@ from sqlalchemy import create_engine
 
 
 if __name__ == "__main__":
-    if len(sys.argv < 3):
+    if len(sys.argv) < 3:
         raise OSError('Not enough arguments specified')
     
     FNAME = sys.argv[1]
