@@ -2,7 +2,7 @@ from yolov3.yolo import object_tracking_table
 import time
 
 if __name__ == "__main__":
-    INPUT_FILE = 'ThreePastShop1cor-cut.mp4'
+    INPUT_FILE = 'WalkByShop1cor-cut.mp4'
     output_name = INPUT_FILE.split('.')[0]
     OUTPUT_FILE = output_name + '-output.avi'
 

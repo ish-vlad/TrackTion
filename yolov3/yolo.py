@@ -114,7 +114,9 @@ def object_tracking_table(INPUT_FILE, OUTPUT_FILE, show_output_image=False, save
                 (x, y) = (boxes[i][0], boxes[i][1])
                 (w, h) = (boxes[i][2], boxes[i][3])
 
-                x_cm, y_cm = get_coords(x, y)
+                x_lower_middle = x + w / 2
+                y_lower_middle = y + h
+                x_cm, y_cm = get_coords(x_lower_middle, y_lower_middle)
 
                 # print(f'x: {x}, y: {y}')
                 # print(f'width: {w}, height: {h}')
