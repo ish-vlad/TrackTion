@@ -1,10 +1,15 @@
 import numpy as np
 import cv2
 
-DEFINING_POINTS_PIXELS = np.array([[91, 163],
-                                   [241, 163],
-                                   [98, 266],
-                                   [322, 265]])
+# DEFINING_POINTS_PIXELS = np.array([[91, 163],
+#                                    [241, 163],
+#                                    [98, 266],
+#                                    [322, 265]])
+
+DEFINING_POINTS_PIXELS = np.array([[91, 155],
+                                   [241, 155],
+                                   [98, 258],
+                                   [322, 257]])
 
 DEFINING_POINTS_CM = np.array([[0, 975],
                                [290, 975],

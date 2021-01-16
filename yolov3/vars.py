@@ -6,4 +6,4 @@ class Yolo:
 
 class Image:
     IMG_SHAPE_X = 384
-    IMG_SHAPE_Y = 288
+    IMG_SHAPE_Y = 280 # Изначально было 288
