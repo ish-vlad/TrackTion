@@ -106,7 +106,7 @@ class Heatmap:
         return logheatmap.T, extent
 
     def draw_heatmap_with_filters(self,
-                                  smoothing: int = 128,
+                                  smoothing: int = 30,
                                   filter_gender: Optional[list] = None,
                                   filter_age: Optional[list] = None,
                                   filter_id: Optional[list] = None,
