@@ -126,7 +126,7 @@ class Heatmap:
 
         img, extent = self.__plot_heatmap(scale_x, scale_y, smoothing)
 
-        plt.imshow(img, extent=extent, origin='lower', cmap="YlGnBu")
+        plt.imshow(img, extent=extent, origin='lower', cmap="hot")
         plt.axis('off')
 
         if save_image:
