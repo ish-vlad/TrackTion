@@ -2,27 +2,13 @@ from typing import Optional
 import numpy as np
 from scipy import ndimage
 import matplotlib.pyplot as plt
+from matplotlib.figure import Figure
 import pandas as pd
+
 np.seterr(divide='ignore')
 # plt.ioff()
 
 class Heatmap:
-
-    """
-    HOW TO USE
-
-    path_csv = 'EnterExitCrossingPaths1cor_cut.csv'
-    data = pd.read_csv(path_csv, index_col=0) # index_col не нужен, если в to_csv добавить параметр index=False
-    x = Heatmap(data)
-    x.draw_heatmap_with_filters(
-                    smoothing=30, # Размытие
-                    filter_gender=None, # Либо None, либо списком выбранные фильтры
-                    filter_age=None, # Либо None, либо списком выбранные фильтры
-                    filter_id=None, # Либо None, либо списком выбранные фильтры
-                    save_image=True
-                    )
-
-    """
 
     def __init__(self, data, image_shift: int = 5):
         self.data = data
@@ -105,30 +91,60 @@ class Heatmap:
 
         return logheatmap.T, extent
 
+    @staticmethod
+    def demographic_feature(data, column_features=['age', 'gender']):
+        total_num_objects = data.id.nunique()
+        result_dict = {'total_num_objects': total_num_objects}
+
+        for column in column_features:
+            df_current = data[['id', column]].drop_duplicates(). \
+                groupby(column).agg({'id': 'count'}). \
+                rename(columns={'id': f'num_of_{column}'})
+
+            df_current['percent'] = (df_current[f'num_of_{column}'] / total_num_objects * 100).round(1)
+            feature_dict = {column: df_current.to_dict('index')}
+            result_dict = {**result_dict, **feature_dict}
+
+        return result_dict
+
     def draw_heatmap_with_filters(self,
                                   smoothing: int = 30,
                                   filter_gender: Optional[list] = None,
                                   filter_age: Optional[list] = None,
-                                  filter_id: Optional[list] = None,
-                                  save_image: bool = False):
+                                  filter_id: Optional[list] = None
+                                  ):
+        """
+
+        :param smoothing: Коэффициент размытия
+        :param filter_gender: Или None, или 'gender'
+        :param filter_age: Или None, или 'age'
+        :param filter_id: Или None, или 'id'
+
+        :return:
+        1) fig (тепловая карта)
+        2) json_info (статистика в формате json)
+        """
+
+
         data = self.__prepare_filter_data(
             filter_gender,
             filter_age,
             filter_id
         )
 
+        json_info = self.demographic_feature(data)
+
         scale_coords = data['scale_xy'].values
 
         scale_x = [x[0] for x in scale_coords]
         scale_y = [x[1] for x in scale_coords]
 
-        plt.figure(figsize=(20, 20))
+        fig = Figure(figsize=(20, 20))
+        axis = fig.add_subplot(1, 1, 1)
 
         img, extent = self.__plot_heatmap(scale_x, scale_y, smoothing)
+        axis.imshow(img, extent=extent, origin='lower', cmap="hot")
+        axis.axis('off')
 
-        plt.imshow(img, extent=extent, origin='lower', cmap="hot")
-        plt.axis('off')
-
-        if save_image:
-            plt.savefig(f'heatmap_{self.data.ds_name.unique()[0]}.png', bbox_inches='tight', pad_inches=0)
+        return fig, json_info
 
