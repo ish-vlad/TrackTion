@@ -39,13 +39,13 @@ class Heatmap:
         xsize = self._xaxis_length
         ysize = self._yaxis_length
 
-        x = xsize - int(
-            xsize / (self._extreme_point_x_max - self._extreme_point_x_min) * (self._extreme_point_x_max - x))
-        y = ysize - int(
+        x1 = int(
+            xsize / (self._extreme_point_x_max - self._extreme_point_x_min) * (self._extreme_point_x_max - x)) #TODO В данном случае из xsize вычитать ничего не нужно, ибо система координат построена в другую сторону
+        y1 = ysize - int(
             ysize / (self._extreme_point_y_max - self._extreme_point_y_min) * (self._extreme_point_y_max - y))
 
-        x_turn = y
-        y_turn = x
+        x_turn = y1
+        y_turn = x1
 
         return x_turn, y_turn
 
@@ -143,7 +143,6 @@ class Heatmap:
         axis = fig.add_subplot(1, 1, 1)
 
         img, extent = self.__plot_heatmap(scale_x, scale_y, smoothing)
-        img = np.flipud(img) #TODO Переделать позже
         axis.imshow(img, extent=extent, origin='lower', cmap="hot")
         axis.axis('off')
 
