@@ -143,6 +143,7 @@ class Heatmap:
         axis = fig.add_subplot(1, 1, 1)
 
         img, extent = self.__plot_heatmap(scale_x, scale_y, smoothing)
+        img = np.flipud(img) #TODO Переделать позже
         axis.imshow(img, extent=extent, origin='lower', cmap="hot")
         axis.axis('off')
 
