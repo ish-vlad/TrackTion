@@ -116,9 +116,9 @@ class Heatmap:
         """
 
         :param smoothing: Коэффициент размытия
-        :param filter_gender: Или None, или 'gender'
-        :param filter_age: Или None, или 'age'
-        :param filter_id: Или None, или 'id'
+        :param filter_gender: Или None, или список фильтров. Пример: ['Male']
+        :param filter_age: Или None, или список фильтров. Пример: ['60+']
+        :param filter_id: Или None, или список фильтров. Пример: ['1', '2']
 
         :return:
         1) fig (тепловая карта)
