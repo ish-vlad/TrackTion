@@ -10,8 +10,8 @@ np.seterr(divide='ignore')
 
 class Heatmap:
 
-    def __init__(self, data, image_shift: int = 5):
-        self.data = data
+    def __init__(self, path_to_csv, image_shift: int = 5):
+        self.data = pd.read_csv(path_to_csv, index_col=0)
 
         self._extreme_point_x_max = self.data.box_xc_cm.max() + image_shift
         self._extreme_point_x_min = self.data.box_xc_cm.min() - image_shift
