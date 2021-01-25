@@ -91,8 +91,7 @@ class Heatmap:
 
         return logheatmap.T, extent
 
-    @staticmethod
-    def demographic_feature(data, column_features=['age', 'gender']):
+    def demographic_feature(self, data, column_features=['age', 'gender']):
         total_num_objects = data.id.nunique()
         result_dict = {'total_num_objects': total_num_objects}
 
@@ -105,7 +104,31 @@ class Heatmap:
             feature_dict = {column: df_current.to_dict('index')}
             result_dict = {**result_dict, **feature_dict}
 
+        to_the_shop_dict = self._to_the_shop()
+        result_dict = {**result_dict, **to_the_shop_dict}
+
         return result_dict
+
+    def _to_the_shop(self):
+        cut_frame = self.data[self.data['box_xc_cm'] <= -20]
+        unique_id = cut_frame.id.unique()
+
+        count = 0
+        for id in unique_id:
+            id_cut_frame = cut_frame[cut_frame['id'] == id]
+            to_the_shop = False
+            coords = id_cut_frame.box_xc_cm.values
+            for i in range(1, len(coords)):
+                cur_coord = coords[i]
+                prev_coord = coords[i-1]
+
+                if prev_coord > cur_coord and abs(prev_coord - cur_coord) > 2:
+                    to_the_shop = True
+
+            if to_the_shop:
+                count += 1
+
+        return {'to_the_shop': count}
 
     def draw_heatmap_with_filters(self,
                                   smoothing: int = 30,
