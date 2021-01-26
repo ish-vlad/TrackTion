@@ -75,13 +75,14 @@ class Heatmap:
         data_filter = self.data[mask_id & mask_age & mask_gender]
         return data_filter
 
-    def __plot_heatmap(self, x, y, smoothing, bins=1000):
+    def __plot_heatmap(self, x, y, smoothing, image_scale, bins=1000):
         xlim = [0, self._yaxis_length]
         ylim = [0, self._xaxis_length]
 
         heatmap, xedges, yedges = np.histogram2d(x, y, bins=bins, range=[xlim, ylim])
 
-        extent = [0, int(self._yaxis_length / 2.5), 0, self._xaxis_length]
+        # extent = [0, int(self._yaxis_length / 2.5), 0, self._xaxis_length]
+        extent = [0, int(self._xaxis_length * image_scale), 0, self._xaxis_length]
 
         logheatmap = np.log(heatmap)
         logheatmap[np.isneginf(logheatmap)] = 0
@@ -104,13 +105,14 @@ class Heatmap:
             feature_dict = {column: df_current.to_dict('index')}
             result_dict = {**result_dict, **feature_dict}
 
-        to_the_shop_dict = self._to_the_shop()
+        to_the_shop_dict = self._to_the_shop(data)
         result_dict = {**result_dict, **to_the_shop_dict}
 
         return result_dict
 
-    def _to_the_shop(self):
-        cut_frame = self.data[self.data['box_xc_cm'] <= -20]
+    @staticmethod
+    def _to_the_shop(cut_data): #TODO Переписать
+        cut_frame = cut_data[cut_data['box_xc_cm'] <= -20]
         unique_id = cut_frame.id.unique()
 
         count = 0
@@ -130,11 +132,13 @@ class Heatmap:
 
         return {'to_the_shop': count}
 
+
     def draw_heatmap_with_filters(self,
                                   smoothing: int = 30,
                                   filter_gender: Optional[list] = None,
                                   filter_age: Optional[list] = None,
-                                  filter_id: Optional[list] = None
+                                  filter_id: Optional[list] = None,
+                                  image_scale: int = 12
                                   ):
         """
 
@@ -162,10 +166,10 @@ class Heatmap:
         scale_x = [x[0] for x in scale_coords]
         scale_y = [x[1] for x in scale_coords]
 
-        fig = Figure(figsize=(20, 20))
+        fig = Figure(figsize=(20, 10), frameon=False)
         axis = fig.add_subplot(1, 1, 1)
 
-        img, extent = self.__plot_heatmap(scale_x, scale_y, smoothing)
+        img, extent = self.__plot_heatmap(scale_x, scale_y, smoothing, image_scale)
         axis.imshow(img, extent=extent, origin='lower', cmap="hot")
         axis.axis('off')
 
