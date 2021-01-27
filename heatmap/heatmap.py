@@ -166,11 +166,11 @@ class Heatmap:
         scale_x = [x[0] for x in scale_coords]
         scale_y = [x[1] for x in scale_coords]
 
-        fig = Figure(figsize=(20, 10), frameon=False)
+        fig = Figure(figsize=(36, 3), frameon=False)
         axis = fig.add_subplot(1, 1, 1)
 
         img, extent = self.__plot_heatmap(scale_x, scale_y, smoothing, image_scale)
-        axis.imshow(img, extent=extent, origin='lower', cmap="hot")
+        axis.imshow(img, extent=extent, origin='lower', cmap="hot", aspect='auto')
         axis.axis('off')
 
         return fig, json_info
